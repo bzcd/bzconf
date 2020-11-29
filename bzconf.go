@@ -70,3 +70,19 @@ func listAll(path string, opt *OptionsList, depth int) ([]string, error) {
 
 	return res, nil
 }
+
+// loadPath load files, and decode to out
+func loadPath(path string, out interface{}, loadFunc func(string, interface{}) error, opts ...*OptionsList) error {
+	l, err := ListAll(path, opts...)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range l {
+		if err = loadFunc(f, out); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

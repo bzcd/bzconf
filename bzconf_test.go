@@ -3,16 +3,16 @@ package bzconf
 import "testing"
 
 func TestBZConf(t *testing.T) {
-	s, err := ListAll("../..",
+	s, err := ListAll("..",
 		DefaultOptionsList().WithRecursion(true).
-			WithSuffix(".go").WithPrefix("b"),
+			WithSuffix(".go"),
 	)
 
 	t.Log(err, s)
 
-	s, err = ListAll("../..",
+	s, err = ListAll("..",
 		DefaultOptionsList().WithRecursion(true).
-			WithSuffix(".go").WithDepth(3),
+			WithSuffix(".go").WithDepth(2),
 	)
 
 	t.Log(err, s)
