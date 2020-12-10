@@ -14,8 +14,10 @@ func ListAll(path string, opts ...*OptionsList) ([]string, error) {
 		opt = opts[0]
 	}
 
-	if strings.HasSuffix(path, "/") {
-		path = path[:len(path)-2]
+	if len(path) == 0 {
+		path = "./"
+	} else if !strings.HasSuffix(path, "/") {
+		path = path + "/"
 	}
 
 	return listAll(path, opt, 1)
@@ -31,7 +33,7 @@ func listAll(path string, opt *OptionsList, depth int) ([]string, error) {
 	var res []string
 	for _, f := range files {
 		name := f.Name()
-		fa := path + "/" + f.Name()
+		fa := path + f.Name()
 
 		if f.IsDir() {
 			if opt.IncludeDir {
@@ -40,7 +42,7 @@ func listAll(path string, opt *OptionsList, depth int) ([]string, error) {
 
 			if opt.Recursion {
 				if opt.Depth == 0 || opt.Depth > depth {
-					r, err := listAll(fa, opt, depth+1)
+					r, err := listAll(fa+"/", opt, depth+1)
 					if err != nil {
 						if opt.IgnoreError {
 							continue
